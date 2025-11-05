@@ -24,7 +24,7 @@ builder.Services.AddCors(opt =>
     opt.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 //---------------------------------------------
-
+/*
 // Identity (com Roles)
 builder.Services.AddIdentityCore<ApplicationUser>(o =>
     {
@@ -54,7 +54,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdmin", p => p.RequireRole("Admin"));
 });
 
-
+*/
 //-------------------------------------------------
 
 // DI
@@ -73,12 +73,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();   // ✅ antes do Authorization
-app.UseAuthorization();
+//app.UseAuthentication();   // ✅ antes do Authorization
+//app.UseAuthorization();
 
 app.UseCors("AllowAll");
 app.MapControllers();
 
+// Apply any pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TaskContext>();
+    db.Database.Migrate();
+}
+
+
+/*
 // Criar/Migrar e semear roles base
 using (var scope = app.Services.CreateScope())
 {
@@ -89,6 +98,6 @@ using (var scope = app.Services.CreateScope())
     foreach (var r in new[] { "Admin", "User" })
         if (!await roleMgr.RoleExistsAsync(r)) await roleMgr.CreateAsync(new IdentityRole(r));
 }
-
+*/
 
 app.Run();

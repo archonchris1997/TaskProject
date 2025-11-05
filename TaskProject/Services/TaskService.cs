@@ -6,8 +6,9 @@ using Task = TaskProject.Models.Task;
 
 namespace TaskProject.Services;
 
-public class TaskService (ITaskRepository repo, IHttpContextAccessor http): ITaskService
+public class TaskService (ITaskRepository repo): ITaskService
 {
+    /*
     private string? CurrentUserId
     {
         get
@@ -19,7 +20,7 @@ public class TaskService (ITaskRepository repo, IHttpContextAccessor http): ITas
             return user?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
- 
+ */
     
     public async Task<IEnumerable<TasksDTO>> GetAllTasksAsync()
     {
